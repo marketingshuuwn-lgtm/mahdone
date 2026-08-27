@@ -149,20 +149,26 @@ export default function App() {
   const [modalOpen, setModalOpen] = useState(false);
   const [projectModalOpen, setProjectModalOpen] = useState(false);
   const [editingTaskId, setEditingTaskId] = useState(null);
+  const [newTaskDefaults, setNewTaskDefaults] = useState(null);
   const [notesTarget, setNotesTarget] = useState(null);
   const [shortcutsOpen, setShortcutsOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const trelloAutoSynced = useRef(false);
 
-  const openAddModal = () => {
+  const openAddModal = (initialValues = null) => {
     setEditingTaskId(null);
+    setNewTaskDefaults(initialValues);
     setModalOpen(true);
   };
   const openEditModal = (id) => {
     setEditingTaskId(id);
+    setNewTaskDefaults(null);
     setModalOpen(true);
   };
-  const closeModal = () => setModalOpen(false);
+  const closeModal = () => {
+    setModalOpen(false);
+    setNewTaskDefaults(null);
+  };
   const openProjectModal = () => setProjectModalOpen(true);
   const closeProjectModal = () => setProjectModalOpen(false);
   const handleSaveProject = async (form) => {
@@ -512,6 +518,7 @@ export default function App() {
           defaultContext={writeContextId}
           workspaces={visibleWorkspaces}
           projects={projects}
+          initialValues={newTaskDefaults}
         />
         <FloatingTimer />
         <TimeTrackingSync />
@@ -553,7 +560,7 @@ export default function App() {
           onToggleSubtask={toggleSubtask}
           workDays={workDays}
         />
-        <TaskModal isOpen={modalOpen} task={editingTask} onClose={closeModal} onSave={handleSaveTask} workDays={workDays} defaultContext={writeContextId} workspaces={visibleWorkspaces} projects={projects} />
+        <TaskModal isOpen={modalOpen} task={editingTask} onClose={closeModal} onSave={handleSaveTask} workDays={workDays} defaultContext={writeContextId} workspaces={visibleWorkspaces} projects={projects} initialValues={newTaskDefaults} />
         <ProjectModal isOpen={projectModalOpen} onClose={closeProjectModal} onSave={handleSaveProject} defaultContext={writeContextId} workspaces={visibleWorkspaces} />
         <FloatingTimer />
         <TimeTrackingSync />
@@ -595,7 +602,7 @@ export default function App() {
               )}
               {view === 'Kpi' && <KpiView tasks={visibleTasks} workspaces={visibleWorkspaces} />}
               {view === 'Motivation' && <BreakSpace tasks={boardTasks} showToast={showToast} />}
-              {view === 'Notepad' && <NotepadView showToast={showToast} onAddTask={openAddModal} />}
+              {view === 'Notepad' && <NotepadView showToast={showToast} onAddTask={openAddModal} onConvertToTask={openAddModal} />}
               {view === 'Archive' && <ArchiveView tasks={archivedTasks} onRestore={restoreTask} onEdit={openEditModal} workDays={workDays} workspaces={workspaces} workspaceLabel={isAllMode ? 'كل المساحات' : activeWorkspace?.label || activeWorkspaceId} />}
               {view === 'Settings' && (
                 <SettingsView
@@ -628,7 +635,7 @@ export default function App() {
             </div>
           </main>
         </AppFrame>
-        <TaskModal isOpen={modalOpen} task={editingTask} onClose={closeModal} onSave={handleSaveTask} workDays={workDays} defaultContext={writeContextId} workspaces={visibleWorkspaces} projects={projects} />
+        <TaskModal isOpen={modalOpen} task={editingTask} onClose={closeModal} onSave={handleSaveTask} workDays={workDays} defaultContext={writeContextId} workspaces={visibleWorkspaces} projects={projects} initialValues={newTaskDefaults} />
         <ProjectModal isOpen={projectModalOpen} onClose={closeProjectModal} onSave={handleSaveProject} defaultContext={writeContextId} workspaces={visibleWorkspaces} />
         <FloatingTimer />
         <TimeTrackingSync />
@@ -818,7 +825,7 @@ export default function App() {
 
         {view === 'Motivation' && <BreakSpace tasks={boardTasks} showToast={showToast} />}
 
-        {view === 'Notepad' && <NotepadView showToast={showToast} />}
+        {view === 'Notepad' && <NotepadView showToast={showToast} onAddTask={openAddModal} onConvertToTask={openAddModal} />}
 
         {view === 'Archive' && (
           <ArchiveView
@@ -879,6 +886,7 @@ export default function App() {
         defaultContext={writeContextId}
         workspaces={visibleWorkspaces}
         projects={projects}
+        initialValues={newTaskDefaults}
       />
 
       <FloatingTimer />

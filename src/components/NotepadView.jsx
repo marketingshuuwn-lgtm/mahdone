@@ -10,10 +10,41 @@ const NOTE_TYPES = {
   reference: { label: 'مرجع', icon: 'ph-bookmark-simple', title: 'مرجع جديد' },
 };
 const BOARD_STAGES = [
-  { id: 'capture', label: 'التقاط', hint: 'فكرة أو معلومة أولية', icon: 'ph-lightning' },
-  { id: 'shape', label: 'قيد التشكيل', hint: 'تحتاج ترتيبًا أو قرارًا', icon: 'ph-compass' },
-  { id: 'next', label: 'الخطوة التالية', hint: 'جاهزة لتحويلها إلى فعل', icon: 'ph-arrow-left' },
+  { id: 'capture', label: 'أفكار جديدة', hint: 'التقطها كما هي دون ترتيب', icon: 'ph-lightning' },
+  { id: 'shape', label: 'أفكار قيد الترتيب', hint: 'وضّحها: ما المقصود؟ وما القرار؟', icon: 'ph-compass' },
+  { id: 'next', label: 'جاهزة للتحويل', hint: 'حوّلها إلى مهمة أو احتفظ بها', icon: 'ph-arrow-left' },
 ];
+
+const NOTE_GUIDANCE = {
+  note: {
+    eyebrow: 'صفحة للشرح',
+    title: 'اكتب الفكرة كما تفكر فيها',
+    hint: 'مناسبة للسياق، المسودة، أو شرح موضوع قبل تحويله إلى فعل.',
+    placeholder: 'ما الفكرة؟ اكتب السياق أو ما تريد تذكره…',
+  },
+  checklist: {
+    eyebrow: 'قائمة للإنجاز',
+    title: 'حوّلها إلى خطوات صغيرة',
+    hint: 'اكتب كل خطوة في سطر، ثم علّمها عند إنجازها.',
+    placeholder: 'أضف خطوة ثم اضغط Enter…',
+  },
+  decision: {
+    eyebrow: 'قرار للحسم',
+    title: 'اجعل القرار قابلاً للرجوع إليه',
+    hint: 'اكتب الخيارات، القرار النهائي، وسبب الاختيار حتى لا تعيد التفكير من البداية.',
+    placeholder: 'ما الخيارات؟\\n\\nالقرار النهائي:\\n\\nالسبب:',
+  },
+  reference: {
+    eyebrow: 'مرجع للعودة',
+    title: 'اختصر ما ستحتاجه لاحقاً',
+    hint: 'ضع الرابط أو المصدر أولاً، ثم اكتب الخلاصة وما الذي يفيدك منه.',
+    placeholder: 'المصدر أو الرابط…\\n\\nالخلاصة وما الذي أعود إليه؟',
+  },
+};
+
+function noteGuidance(type) {
+  return NOTE_GUIDANCE[type] || NOTE_GUIDANCE.note;
+}
 
 function slugify(text) { return (text || 'مسودة').trim().replace(/[\\/:*?"<>|]/g, '').replace(/\s+/g, '-').slice(0, 60); }
 function downloadMd(title, content) {
@@ -39,7 +70,7 @@ function normalizeChecklist(items) {
   return Array.isArray(items) ? items.map((item) => ({ id: item.id || `${Date.now()}-${Math.random()}`, title: item.title || '', completed: Boolean(item.completed) })) : [];
 }
 
-export default function NotepadView({ showToast, onAddTask }) {
+export default function NotepadView({ showToast, onAddTask, onConvertToTask }) {
   const { notes, loading, createNote, updateNote, deleteNote } = useStandaloneNotes(showToast);
   const [activeId, setActiveId] = useState(null);
   const [draftTitle, setDraftTitle] = useState('');
@@ -54,6 +85,7 @@ export default function NotepadView({ showToast, onAddTask }) {
   const saveTimer = useRef(null);
   const hydratedId = useRef(null);
   const activeNote = notes.find((note) => note.id === activeId) || null;
+  const activeGuidance = noteGuidance(activeNote?.note_type);
 
   useEffect(() => {
     if (notes.length > 0 && !activeId) setActiveId(notes[0].id);
@@ -124,16 +156,37 @@ export default function NotepadView({ showToast, onAddTask }) {
       setActiveId(null);
     }
   };
+  const convertToTask = () => {
+    if (!activeNote || !onConvertToTask) return;
+    const checklistNotes = activeNote.note_type === 'checklist'
+      ? draftChecklist.map((item) => `- [${item.completed ? 'x' : ' '}] ${item.title}`).join('\\n')
+      : '';
+    onConvertToTask({
+      title: draftTitle.trim() || activeNote.title || 'مهمة من المفكرة',
+      notes: [draftContent.trim(), checklistNotes].filter(Boolean).join('\\n\\n'),
+      subtasks: activeNote.note_type === 'checklist' ? draftChecklist : [],
+      context: activeNote.context || undefined,
+      projectId: activeNote.project_id || null,
+    });
+  };
 
   return (
     <div className="knowledge-page knowledge-page-v2">
       <PageHeader
         eyebrow="مساحة المعرفة"
         title="المفكرة"
-        description="التقط فكرة أو قائمة أو قرارًا بسرعة، ثم نظّمها عندما تحتاج. ربطها بالعمل اختياري، لا يُفرض قبل أن يكون مفيدًا."
-        actions={<><button type="button" className="btn-secondary" onClick={() => setWorkspaceMode('board')}><i className="ph ph-kanban" /> لوحة التفكير</button><button type="button" className="btn-primary" onClick={() => createForType('note')}><i className="ph ph-plus" /> ملاحظة جديدة</button></>}
+        description="اكتب الفكرة، اختر شكلها المناسب، ثم حوّلها إلى مهمة عندما تصبح واضحة. لا تحتاج إلى ترتيبها من البداية."
+        actions={<><button type="button" className="btn-secondary" onClick={() => setWorkspaceMode('board')}><i className="ph ph-kanban" /> كيف تتحرك الفكرة؟</button><button type="button" className="btn-primary" onClick={() => createForType('note')}><i className="ph ph-plus" /> ابدأ بفكرة</button></>}
         meta={<span>{loading ? 'جارٍ تحميل المعرفة…' : `${notes.length} عنصر معرفة`}</span>}
       />
+
+      <div className="knowledge-how-it-works" aria-label="طريقة استخدام المفكرة">
+        <div><strong><span>1</span> التقط</strong><small>سجل الفكرة فوراً</small></div>
+        <i className="ph ph-arrow-left" aria-hidden="true" />
+        <div><strong><span>2</span> وضّح</strong><small>حدد النوع والسياق</small></div>
+        <i className="ph ph-arrow-left" aria-hidden="true" />
+        <div><strong><span>3</span> نفّذ</strong><small>حوّلها لمهمة جاهزة</small></div>
+      </div>
 
       <div className="knowledge-tabs" role="tablist" aria-label="طريقة عرض المفكرة">
         <button type="button" role="tab" id="knowledge-notes-tab" aria-selected={workspaceMode === 'notes'} aria-controls="knowledge-notes-panel" className={workspaceMode === 'notes' ? 'is-active' : ''} onClick={() => setWorkspaceMode('notes')}><i className="ph ph-notebook" /> المفكرة</button>
@@ -142,12 +195,12 @@ export default function NotepadView({ showToast, onAddTask }) {
 
       {workspaceMode === 'board' ? (
         <section className="knowledge-board-view" role="tabpanel" id="knowledge-board-panel" aria-labelledby="knowledge-board-tab">
-          <div className="knowledge-board-intro"><span className="page-hero-eyebrow">من الفكرة إلى الفعل</span><h2>لوحة التفكير</h2><p>كل بطاقة لها حالة مقصودة. حرّكها عندما يتغير مستوى وضوحها، لا بسبب موقعها في القائمة.</p></div>
+          <div className="knowledge-board-intro"><span className="page-hero-eyebrow">خط سير الفكرة</span><h2>أين وصلت الفكرة؟</h2><p>ابدأ من «أفكار جديدة»، رتّب ما يستحق التفكير، ثم حوّل الواضح إلى مهمة. لا تحتاج إلى استخدام الأعمدة كلها.</p></div>
               {loading ? <p className="knowledge-muted knowledge-board-loading">جارٍ تجهيز لوحة التفكير…</p> : <div className="knowledge-board-columns">
             {BOARD_STAGES.map((stage) => (
               <div className="knowledge-board-column" key={stage.id}><div className="knowledge-board-column-head"><span><i className={`ph ${stage.icon}`} />{stage.label}</span><small>{stage.hint}</small></div>
                 {filtered.filter((note) => (note.board_stage || 'capture') === stage.id).map((note) => <div className="knowledge-board-note" key={note.id}><button type="button" className="knowledge-board-note-open" onClick={() => { hydratedId.current = null; setActiveId(note.id); setWorkspaceMode('notes'); }}><strong>{note.title || 'بدون عنوان'}</strong><span>{notePreview(note)}</span></button><div className="knowledge-board-note-actions"><button type="button" disabled={stage.id === 'capture'} onClick={() => moveBoardStage(note, -1)} title="العمود السابق"><i className="ph ph-arrow-right" /></button><button type="button" disabled={stage.id === 'next'} onClick={() => moveBoardStage(note, 1)} title="العمود التالي"><i className="ph ph-arrow-left" /></button></div></div>)}
-                <button type="button" className="knowledge-board-add" onClick={() => createForType('note')}><i className="ph ph-plus" /> إضافة فكرة</button>
+                <button type="button" className="knowledge-board-add" onClick={() => createForType('note')}><i className="ph ph-plus" /> التقط فكرة</button>
               </div>
             ))}
               </div>}
@@ -171,14 +224,15 @@ export default function NotepadView({ showToast, onAddTask }) {
             </div>
           </aside>
           <article className="knowledge-editor">
-            {!activeNote ? <div className="knowledge-empty"><i className="ph ph-notebook" /><h2>اختر طريقة تفكيرك</h2><p>صفحة للشرح، قائمة للالتزام، قرار للحسم، أو مرجع للعودة إليه.</p><button type="button" className="btn-primary" onClick={() => createForType('note')}>ابدأ ملاحظة جديدة</button></div> : <>
+            {!activeNote ? <div className="knowledge-empty"><i className="ph ph-notebook" /><h2>التقط ما تفكر فيه</h2><p>حوّل الأفكار المبعثرة إلى أفعال منظمة. ابدأ بكتابة أي شيء، ثم حدد لاحقاً إن كان قراراً أو مرجعاً أو قائمة مهام.</p><div className="knowledge-empty-actions"><button type="button" className="btn-primary" onClick={() => createForType('note')}><i className="ph ph-lightning" /> سجل فكرة سريعة</button><button type="button" className="btn-secondary" onClick={() => createForType('checklist')}><i className="ph ph-list-checks" /> أنشئ قائمة</button></div></div> : <>
               <div className="knowledge-editor-top"><span className="knowledge-status"><i className="ph ph-cloud-check" /> حفظ تلقائي</span><div className="knowledge-editor-actions"><button type="button" className={`knowledge-mode-button ${editorMode === 'edit' ? 'is-active' : ''}`} onClick={() => setEditorMode('edit')}>تحرير</button><button type="button" className={`knowledge-mode-button ${editorMode === 'preview' ? 'is-active' : ''}`} onClick={() => setEditorMode('preview')}>قراءة</button><button type="button" className={`knowledge-icon-action ${activeNote.is_pinned ? 'is-active' : ''}`} onClick={() => updateMeta({ is_pinned: !activeNote.is_pinned })} title="تثبيت"><i className="ph ph-push-pin" /></button><button type="button" className="knowledge-icon-action" onClick={() => downloadMd(draftTitle, draftContent)} title="تصدير Markdown"><i className="ph ph-download-simple" /></button><button type="button" className="knowledge-icon-action danger" onClick={handleDelete} title="حذف الصفحة"><i className="ph ph-trash" /></button></div></div>
               <div className="knowledge-type-row">{Object.entries(NOTE_TYPES).map(([type, meta]) => <button type="button" key={type} className={activeNote.note_type === type ? 'is-active' : ''} onClick={() => updateMeta({ note_type: type })}><i className={`ph ${meta.icon}`} />{meta.label}</button>)}</div>
+              <div className="knowledge-editor-guide"><span className="knowledge-editor-guide-icon"><i className={`ph ${NOTE_TYPES[activeNote.note_type]?.icon || 'ph-note'}`} /></span><div><strong>{activeGuidance.title}</strong><p>{activeGuidance.hint}</p></div></div>
               <input className="knowledge-title-input" value={draftTitle} onChange={(event) => setDraftTitle(event.target.value)} placeholder="عنوان واضح للملاحظة" />
               <div className="knowledge-meta-row"><label><i className="ph ph-tag" /><input value={draftLabels.join(', ')} onChange={(event) => saveLabels(event.target.value)} placeholder="وسوم: عمل، فكرة، بحث" /></label><label><i className="ph ph-kanban" /><select aria-label="حالة بطاقة لوحة التفكير" value={activeNote.board_stage || 'capture'} onChange={(event) => updateMeta({ board_stage: event.target.value })}>{BOARD_STAGES.map((stage) => <option value={stage.id} key={stage.id}>{stage.label}</option>)}</select></label></div>
               <div className="knowledge-divider" />
-              {activeNote.note_type === 'checklist' ? <div className="knowledge-checklist-editor"><div className="knowledge-checklist-head"><span>عناصر القائمة</span><small>{draftChecklist.filter((item) => item.completed).length}/{draftChecklist.length} منجزة</small></div>{draftChecklist.map((item) => <div className="knowledge-checklist-item" key={item.id}><button type="button" onClick={() => toggleChecklistItem(item.id)}><i className={`ph ${item.completed ? 'ph-check-square' : 'ph-square'}`} /></button><input value={item.title} onChange={(event) => setDraftChecklist((items) => items.map((entry) => entry.id === item.id ? { ...entry, title: event.target.value } : entry))} placeholder="عنصر في القائمة" /><button type="button" className="knowledge-list-remove" onClick={() => setDraftChecklist((items) => items.filter((entry) => entry.id !== item.id))}><i className="ph ph-x" /></button></div>)}<div className="knowledge-checklist-add"><input value={newChecklistItem} onChange={(event) => setNewChecklistItem(event.target.value)} onKeyDown={(event) => { if (event.key === 'Enter') { event.preventDefault(); addChecklistItem(); } }} placeholder="أضف عنصرًا ثم Enter" /><button type="button" onClick={addChecklistItem}><i className="ph ph-plus" /> إضافة</button></div></div> : editorMode === 'edit' ? <textarea className="knowledge-content-input" value={draftContent} onChange={(event) => setDraftContent(event.target.value)} placeholder="اكتب الملاحظة، السياق، أو المرجع…" /> : <div className="knowledge-rendered-content" dangerouslySetInnerHTML={{ __html: marked.parse(draftContent || '*لا يوجد محتوى بعد*') }} />}
-              <div className="knowledge-command-bar"><span>اختصارات</span><button type="button" onClick={() => setDraftContent((content) => `${content}${content ? '\n\n' : ''}## القرار\n\n`)}>+ قرار</button><button type="button" onClick={() => setDraftContent((content) => `${content}${content ? '\n\n' : ''}### مراجع\n\n`)}>+ مراجع</button><button type="button" onClick={onAddTask}><i className="ph ph-check-square" /> فتح مهمة من هذه الفكرة</button></div>
+              {activeNote.note_type === 'checklist' ? <div className="knowledge-checklist-editor"><div className="knowledge-checklist-head"><span>عناصر القائمة</span><small>{draftChecklist.filter((item) => item.completed).length}/{draftChecklist.length} منجزة</small></div>{draftChecklist.map((item) => <div className="knowledge-checklist-item" key={item.id}><button type="button" onClick={() => toggleChecklistItem(item.id)}><i className={`ph ${item.completed ? 'ph-check-square' : 'ph-square'}`} /></button><input value={item.title} onChange={(event) => setDraftChecklist((items) => items.map((entry) => entry.id === item.id ? { ...entry, title: event.target.value } : entry))} placeholder="عنصر في القائمة" /><button type="button" className="knowledge-list-remove" onClick={() => setDraftChecklist((items) => items.filter((entry) => entry.id !== item.id))}><i className="ph ph-x" /></button></div>)}<div className="knowledge-checklist-add"><input value={newChecklistItem} onChange={(event) => setNewChecklistItem(event.target.value)} onKeyDown={(event) => { if (event.key === 'Enter') { event.preventDefault(); addChecklistItem(); } }} placeholder="أضف عنصرًا ثم Enter" /><button type="button" onClick={addChecklistItem}><i className="ph ph-plus" /> إضافة</button></div></div> : editorMode === 'edit' ? <textarea className="knowledge-content-input" value={draftContent} onChange={(event) => setDraftContent(event.target.value)} placeholder={activeGuidance.placeholder} /> : <div className="knowledge-rendered-content" dangerouslySetInnerHTML={{ __html: marked.parse(draftContent || '*لا يوجد محتوى بعد*') }} />}
+              <div className="knowledge-command-bar"><span>خطوة تالية</span><button type="button" onClick={() => setDraftContent((content) => `${content}${content ? '\n\n' : ''}## القرار\n\n`)}>أضف قرارًا</button><button type="button" onClick={() => setDraftContent((content) => `${content}${content ? '\n\n' : ''}### مراجع\n\n`)}>أضف مرجعًا</button><button type="button" onClick={convertToTask}><i className="ph ph-check-square" /> حوّلها إلى مهمة</button></div>
             </>}
           </article>
         </section>

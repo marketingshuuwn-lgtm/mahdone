@@ -62,9 +62,16 @@ function clearDraft(taskId) {
   }
 }
 
-function formFromTask(task, defaultContext) {
+function formFromTask(task, defaultContext, initialValues = null) {
   if (!task) {
-    return { ...EMPTY_FORM, context: normalizeTaskContext(defaultContext) };
+    return {
+      ...EMPTY_FORM,
+      ...(initialValues || {}),
+      context: normalizeTaskContext(initialValues?.context || defaultContext),
+      projectId: initialValues?.projectId || null,
+      subtasks: normalizeSubtasks(initialValues?.subtasks),
+      duration: Math.max(1, parseInt(initialValues?.duration, 10) || 1),
+    };
   }
   return {
     title: task.title || '',
@@ -105,6 +112,7 @@ export default function TaskModal({
   defaultContext = 'work',
   workspaces = DEFAULT_WORKSPACES,
   projects = [],
+  initialValues = null,
 }) {
   const [form, setForm] = useState(EMPTY_FORM);
   const [baseline, setBaseline] = useState(EMPTY_FORM);
@@ -125,7 +133,7 @@ export default function TaskModal({
   useEffect(() => {
     if (!isOpen) return;
 
-    const base = formFromTask(task, defaultContext);
+    const base = formFromTask(task, defaultContext, initialValues);
     const draft = readDraft(task?.id ?? null);
 
     if (draft?.form && isDirty(draft.form, base)) {
@@ -147,7 +155,7 @@ export default function TaskModal({
       setDraftBanner(null);
     }
     setNewSubtaskTitle('');
-  }, [task, isOpen, defaultContext]);
+  }, [task, isOpen, defaultContext, initialValues]);
 
   useEffect(() => {
     if (!isOpen) return undefined;
@@ -173,12 +181,12 @@ export default function TaskModal({
 
   const discardDraft = useCallback(() => {
     clearDraft(taskIdRef.current);
-    const base = formFromTask(task, defaultContext);
+    const base = formFromTask(task, defaultContext, initialValues);
     setForm(base);
     setBaseline(base);
     setDraftBanner(null);
     setNewSubtaskTitle('');
-  }, [task, defaultContext]);
+  }, [task, defaultContext, initialValues]);
 
   const toggleDay = (dayId) => {
     setForm((f) => {
