@@ -1,0 +1,11 @@
+.notepad-page .notepad-shell {
+  padding: 16px 18px;
+}
+.notepad-body {
+  height: calc(100vh - 220px);
+  min-height: 420px;
+}
+.notepad-search {
+  font-size: var(--fs-sm);
+  padding: 8px 12px;
+}

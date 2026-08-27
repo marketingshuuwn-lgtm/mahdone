@@ -1,0 +1,161 @@
+.today-view {
+  --today-ink: #1f2933;
+  --today-muted: #6b7280;
+  --today-line: rgba(31, 41, 51, 0.11);
+  --today-soft: #f7f7f4;
+  --today-accent: #167c72;
+  --today-accent-soft: #e4f3ef;
+  --today-warm: #fff4e6;
+  width: min(1120px, 100%);
+  margin: 0 auto;
+  padding: clamp(18px, 4vw, 48px) 0 72px;
+  color: var(--today-ink);
+}
+
+.today-command-center {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 28px;
+  padding: clamp(24px, 4vw, 44px);
+  border: 1px solid var(--today-line);
+  border-radius: 28px;
+  background: linear-gradient(135deg, #fffdf8 0%, #eff7f4 100%);
+  box-shadow: 0 20px 50px rgba(39, 63, 58, 0.08);
+}
+
+.today-command-copy { max-width: 640px; }
+.today-eyebrow, .today-section-kicker {
+  margin: 0 0 9px;
+  color: var(--today-accent);
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
+.today-command-center h1 { margin: 0; font-size: clamp(2rem, 4vw, 3.6rem); line-height: 1.05; letter-spacing: -0.05em; }
+.today-date { margin: 10px 0 0; color: var(--today-muted); font-size: 0.95rem; }
+.today-command-description { max-width: 520px; margin: 20px 0 0; color: #4b5563; font-size: 1.02rem; line-height: 1.8; }
+.today-command-actions { display: flex; flex-wrap: wrap; gap: 10px; justify-content: flex-end; }
+.today-command-actions button { white-space: nowrap; }
+
+.today-mode-tabs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 22px 0;
+  padding: 6px;
+  border: 1px solid var(--today-line);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.72);
+}
+.today-mode-tabs button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 13px;
+  color: var(--today-muted);
+  background: transparent;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 160ms ease;
+}
+.today-mode-tabs button:hover, .today-mode-tabs button.is-active { color: var(--today-ink); background: var(--today-soft); }
+.today-mode-tabs button.is-active { color: var(--today-accent); box-shadow: inset 0 0 0 1px rgba(22, 124, 114, 0.12); }
+.today-mode-tabs button span { min-width: 22px; padding: 2px 6px; border-radius: 999px; background: rgba(107, 114, 128, 0.1); font-size: 0.72rem; text-align: center; }
+
+.today-plan-intro, .today-panel-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 18px;
+}
+.today-plan-intro h2, .today-panel-heading h2, .today-section-heading h2 { margin: 0; font-size: clamp(1.25rem, 2vw, 1.65rem); letter-spacing: -0.025em; }
+.today-plan-intro p:not(.today-section-kicker), .today-panel-heading p:not(.today-section-kicker) { max-width: 680px; margin: 9px 0 0; color: var(--today-muted); line-height: 1.7; }
+.today-plan-progress { display: grid; flex: 0 0 auto; min-width: 96px; padding: 13px 16px; border: 1px solid var(--today-line); border-radius: 16px; background: var(--today-soft); text-align: center; }
+.today-plan-progress strong { font-size: 1.3rem; color: var(--today-accent); }
+.today-plan-progress span { margin-top: 2px; color: var(--today-muted); font-size: 0.72rem; }
+
+.today-focus-section, .today-candidates-section, .today-secondary-panel { margin-top: 22px; padding: clamp(18px, 3vw, 28px); border: 1px solid var(--today-line); border-radius: 22px; background: rgba(255, 255, 255, 0.68); }
+.today-focus-section { border-color: rgba(22, 124, 114, 0.18); background: linear-gradient(180deg, rgba(228, 243, 239, 0.56), rgba(255, 255, 255, 0.82)); }
+.today-section-heading { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 16px; }
+.today-section-heading.compact { margin-bottom: 14px; }
+.today-focus-count, .today-candidate-hint { color: var(--today-muted); font-size: 0.8rem; font-weight: 700; }
+.today-task-list { display: grid; gap: 10px; }
+.today-task-list .task-row { border-color: rgba(31, 41, 51, 0.1); box-shadow: 0 4px 14px rgba(31, 41, 51, 0.035); }
+
+.today-candidate-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
+.today-candidate { display: flex; align-items: stretch; min-width: 0; border: 1px solid var(--today-line); border-radius: 14px; background: #fff; transition: 160ms ease; }
+.today-candidate:hover, .today-candidate.is-selected { border-color: rgba(22, 124, 114, 0.4); box-shadow: 0 8px 20px rgba(39, 63, 58, 0.07); }
+.today-candidate-select, .today-candidate-more { display: grid; place-items: center; flex: 0 0 42px; border: 0; color: var(--today-accent); background: transparent; cursor: pointer; }
+.today-candidate-select:disabled { color: #c3c8c6; cursor: not-allowed; }
+.today-candidate-select i { font-size: 1.2rem; }
+.today-candidate-body { display: grid; flex: 1; min-width: 0; gap: 5px; padding: 12px 3px; border: 0; background: transparent; text-align: right; cursor: pointer; }
+.today-candidate-title { overflow: hidden; color: var(--today-ink); font-size: 0.9rem; font-weight: 750; text-overflow: ellipsis; white-space: nowrap; }
+.today-candidate-meta { display: flex; align-items: center; gap: 7px; overflow: hidden; color: var(--today-muted); font-size: 0.72rem; white-space: nowrap; }
+.today-context-chip { max-width: 110px; overflow: hidden; padding: 2px 7px; border-radius: 999px; color: var(--ctx-color, var(--today-accent)); background: color-mix(in srgb, var(--ctx-color, var(--today-accent)) 12%, white); text-overflow: ellipsis; }
+.is-overdue-text { color: #b94d31; font-weight: 700; }
+.today-candidate-more { color: #a0a6a4; }
+.today-candidate-more:hover { color: var(--today-accent); }
+.today-more-button { display: block; margin: 16px auto 0; padding: 7px 12px; border: 0; border-radius: 9px; color: var(--today-accent); background: var(--today-accent-soft); font: inherit; font-size: 0.78rem; font-weight: 800; cursor: pointer; }
+
+.today-secondary-panel { min-height: 240px; }
+.today-panel-heading { align-items: center; }
+.today-panel-heading .btn-secondary { flex: 0 0 auto; white-space: nowrap; }
+.today-all-link { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; margin-top: 24px; padding: 12px; border: 1px dashed var(--today-line); border-radius: 14px; color: var(--today-muted); background: transparent; font: inherit; font-size: 0.84rem; font-weight: 750; cursor: pointer; transition: 160ms ease; }
+.today-all-link:hover { color: var(--today-accent); border-color: rgba(22, 124, 114, 0.35); background: var(--today-accent-soft); }
+.today-clear-state { padding: 24px; border: 1px dashed var(--today-line); border-radius: 20px; background: var(--today-soft); }
+
+@media (max-width: 760px) {
+  .today-view { padding: 14px 0 44px; }
+  .today-command-center, .today-plan-intro, .today-panel-heading { align-items: stretch; flex-direction: column; }
+  .today-command-actions { justify-content: stretch; }
+  .today-command-actions button { flex: 1; }
+  .today-mode-tabs { overflow-x: auto; }
+  .today-mode-tabs button { flex: 1 0 auto; justify-content: center; }
+  .today-candidate-list { grid-template-columns: 1fr; }
+  .today-plan-progress { align-self: flex-start; }
+  .today-panel-heading .btn-secondary { align-self: flex-start; }
+}
+
+.today-workspace-layout { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 18px; align-items: start; }
+.today-primary-flow { min-width: 0; }
+.today-calendar-card { position: sticky; top: 20px; padding: 18px; border: 1px solid var(--today-line); border-radius: 22px; background: linear-gradient(180deg, rgba(228,243,239,.65), rgba(255,255,255,.92)); box-shadow: 0 12px 30px rgba(39,63,58,.06); }
+.today-calendar-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.today-calendar-heading h2 { margin: 3px 0 0; font-size: 19px; letter-spacing: -.03em; }
+.today-calendar-heading > i { color: var(--today-accent); font-size: 22px; }
+.today-calendar-summary { margin: 12px 0 14px; color: var(--today-muted); font-size: .72rem; }
+.today-calendar-days { display: grid; gap: 7px; }
+.today-calendar-day { display: grid; grid-template-columns: 44px 30px 1fr; align-items: center; gap: 8px; padding: 9px 10px; border: 1px solid transparent; border-radius: 12px; color: var(--today-muted); font-size: .72rem; }
+.today-calendar-day strong { color: var(--today-ink); font-size: 14px; }
+.today-calendar-day small { text-align: left; color: #a0a6a4; }
+.today-calendar-day.is-today { border-color: rgba(22,124,114,.25); background: var(--today-accent-soft); color: var(--today-accent); }
+.today-calendar-note { margin: 16px 0 0; padding-top: 14px; border-top: 1px solid var(--today-line); color: #8b9491; font-size: 11px; line-height: 1.7; }
+.today-project-chip { max-width: 140px; overflow: hidden; padding: 2px 7px; border-radius: 999px; color: var(--today-accent); background: var(--today-accent-soft); text-overflow: ellipsis; }
+@media (max-width: 900px) { .today-workspace-layout { grid-template-columns: 1fr; } .today-calendar-card { position: static; order: -1; } }
+
+/* ─── Dense work surface: scan first, details on demand ─── */
+.today-view { width: min(1380px, 100%); padding: 22px clamp(14px, 2.5vw, 34px) 82px; }
+.today-command-center { align-items: center; padding: 22px 28px; border-radius: 20px; box-shadow: 0 8px 24px rgba(39,63,58,.06); }
+.today-command-description { margin-top: 12px; font-size: .92rem; }
+.today-mode-tabs { margin: 14px 0; }
+.today-workspace-layout { grid-template-columns: minmax(0, 1fr) 250px; gap: 14px; }
+.today-focus-section, .today-candidates-section, .today-secondary-panel { margin-top: 14px; padding: 16px 18px; border-radius: 16px; }
+.today-candidate-list { grid-template-columns: 1fr; gap: 0; border-top: 1px solid var(--today-line); }
+.today-candidate { min-height: 52px; border: 0; border-bottom: 1px solid var(--today-line); border-radius: 0; background: transparent; }
+.today-candidate:hover, .today-candidate.is-selected { border-color: var(--today-line); background: var(--today-soft); box-shadow: none; }
+.today-candidate-select, .today-candidate-more { flex-basis: 36px; }
+.today-candidate-body { display: flex; flex-direction: row; align-items: center; justify-content: space-between; gap: 14px; padding: 8px 4px; }
+.today-candidate-title { flex: 1; font-size: .82rem; }
+.today-candidate-meta { flex: 0 0 auto; justify-content: flex-end; }
+.today-more-button { margin: 10px auto 0; }
+.today-plan-intro { margin-bottom: 12px; }
+.today-plan-intro h2, .today-panel-heading h2, .today-section-heading h2 { font-size: 1.18rem; }
+.today-calendar-card { padding: 14px; border-radius: 16px; }
+.today-calendar-day { padding: 7px 8px; }
+@media (max-width: 900px) { .today-workspace-layout { grid-template-columns: 1fr; } }

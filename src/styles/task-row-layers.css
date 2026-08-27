@@ -1,0 +1,188 @@
+/* صف المهمة — حالة فقط؛ الموعد عبر التعديل أو ⋮ */
+.task-row-daily {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  padding-block: 2px;
+  touch-action: manipulation;
+}
+
+.task-row-daily .task-row-status {
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  min-height: 36px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.task-row-more-btn {
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  min-height: 36px;
+}
+
+.task-draft-dot {
+  display: inline-flex;
+  align-items: center;
+  margin-inline-end: 6px;
+  vertical-align: middle;
+}
+
+.task-draft-dot-inner {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #eab308;
+  box-shadow: 0 0 0 2px color-mix(in srgb, #eab308 25%, transparent);
+}
+
+.task-row-chip.draft-chip {
+  color: #a16207;
+  background: rgba(234, 179, 8, 0.14);
+}
+
+.task-row-chip.overdue-chip {
+  color: #84241e !important;
+  background: var(--danger-light, rgba(239, 68, 63, 0.12));
+  font-weight: 600;
+}
+
+.task-row-manage {
+  position: relative;
+  flex-shrink: 0;
+  display: flex;
+  align-items: flex-start;
+  padding-inline-start: 4px;
+  z-index: 2;
+}
+
+.task-row-menu-wrap {
+  position: relative;
+}
+
+.task-row-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  inset-inline-end: 0;
+  inset-inline-start: auto;
+  z-index: 80;
+  min-width: 220px;
+  max-width: min(280px, 90vw);
+  padding: 6px;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  background: var(--card-bg, var(--surface, #fff));
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.16);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  pointer-events: auto;
+}
+
+[data-theme='dark'] .task-row-menu {
+  background: var(--card-bg, #1c1c1e);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+}
+
+.task-row-menu button,
+.task-row-menu-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  border: none;
+  background: transparent;
+  color: var(--text-primary);
+  font: inherit;
+  font-size: var(--fs-sm, 13px);
+  padding: 10px 12px;
+  min-height: 40px;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: start;
+  text-decoration: none;
+  pointer-events: auto;
+}
+
+.task-row-menu button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.task-row-menu button:hover:not(:disabled),
+.task-row-menu-link:hover {
+  background: var(--accent-light, rgba(0, 0, 0, 0.05));
+}
+
+.task-row-menu button.is-danger {
+  color: var(--danger);
+}
+
+.task-row-menu-reschedule {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px 10px;
+  border-top: 1px solid var(--border-color);
+  margin-top: 4px;
+  pointer-events: auto;
+}
+
+.task-row-menu-reschedule label {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.task-row-menu-reschedule input[type='date'] {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: var(--surface, transparent);
+  color: var(--text-primary);
+  font: inherit;
+  pointer-events: auto;
+}
+
+.task-row.has-draft .task-row-title {
+  font-weight: 600;
+}
+
+/* سجل الجدولة داخل النافذة فقط */
+.schedule-log-panel {
+  margin-top: 8px;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px dashed var(--border-color);
+  background: color-mix(in srgb, var(--surface, transparent) 80%, transparent);
+}
+
+.schedule-log-panel h4 {
+  margin: 0 0 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.schedule-log-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 140px;
+  overflow-y: auto;
+}
+
+.schedule-log-list li {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}

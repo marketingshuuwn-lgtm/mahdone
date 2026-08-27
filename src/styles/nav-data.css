@@ -1,0 +1,37 @@
+.nav-hint {
+  display: inline-block;
+  margin-right: 6px;
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--text-muted);
+  opacity: 0.85;
+}
+.nav-item.active .nav-hint {
+  color: var(--accent);
+  opacity: 0.7;
+}
+
+.data-btn-full {
+  width: 100%;
+  flex: 1 1 100%;
+}
+.data-actions .dropdown-menu button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-align: right;
+}
+
+.kpi-trello-managed-badge,
+.workspace-trello-badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: rgba(0, 121, 191, 0.12);
+  color: #0079bf;
+  border: 1px solid rgba(0, 121, 191, 0.25);
+  letter-spacing: 0;
+}

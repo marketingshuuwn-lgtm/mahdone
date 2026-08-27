@@ -1,0 +1,445 @@
+/**
+ * Phase 1–2 — stacked matrix + TaskRow + pending/archive groups
+ */
+
+.matrix-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.matrix-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.matrix-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: var(--card-bg-grad);
+  box-shadow: var(--shadow-soft);
+}
+
+.matrix-stat-value {
+  font-size: var(--fs-2xl);
+  font-weight: var(--fw-extrabold);
+  line-height: 1.2;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.matrix-stat-label {
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+}
+
+.matrix-stat.is-warn .matrix-stat-value {
+  color: var(--danger);
+}
+
+.matrix-stat-fire {
+  font-size: 16px;
+}
+
+.matrix-stack-toolbar {
+  justify-content: flex-end;
+  margin: 0;
+}
+
+.matrix-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* visible حتى لا تُقص قائمة ⋮ ولا تُعطّل النقر */
+.matrix-section {
+  border-radius: 16px;
+  background: var(--card-bg-grad);
+  box-shadow: var(--shadow-soft);
+  overflow: visible;
+  transition: box-shadow 0.15s ease;
+}
+
+.matrix-section.is-drag-over {
+  box-shadow: 0 0 0 2px var(--section-color, var(--accent));
+}
+
+.matrix-section-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  text-align: right;
+  padding: 12px 14px;
+  color: var(--text-primary);
+  border-radius: 16px 16px 0 0;
+}
+
+.pending-group-head {
+  cursor: default;
+}
+
+.matrix-section-edge {
+  width: 4px;
+  align-self: stretch;
+  min-height: 22px;
+  border-radius: 999px;
+  background: var(--section-color, var(--accent));
+  flex-shrink: 0;
+}
+
+.matrix-section-title {
+  flex: 1;
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-md);
+  color: var(--section-color, var(--text-primary));
+}
+
+.matrix-section-count {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-bold);
+  color: var(--text-secondary);
+  background: var(--hover-bg);
+  padding: 3px 10px;
+  border-radius: 8px;
+}
+
+.matrix-section-header .ph {
+  color: var(--text-muted);
+  font-size: 16px;
+}
+
+.matrix-section.is-collapsed .matrix-section-header {
+  padding-block: 10px;
+  border-radius: 16px;
+}
+
+.matrix-section-body {
+  padding: 0 8px 8px;
+  min-height: 0;
+  overflow: visible;
+  position: relative;
+  z-index: 0;
+}
+
+.matrix-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 28px 12px;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.matrix-empty .ph {
+  font-size: 28px;
+  opacity: 0.7;
+}
+
+.matrix-empty p {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-bold);
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.matrix-empty span {
+  font-size: var(--fs-xs);
+}
+
+/* Pending toolbar — flat, not a nested card box */
+.pending-toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px 0 4px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.pending-toolbar-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.pending-toolbar-label {
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+  min-width: 40px;
+}
+
+.pending-count-hint {
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+  margin: 8px 0 12px;
+}
+
+.pending-empty {
+  margin-top: 12px;
+}
+
+/* ─── TaskRow ─── */
+.task-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 8px;
+  border-bottom: 1px solid var(--border-color);
+  background: transparent;
+  transition: background 0.15s ease;
+  cursor: grab;
+  position: relative;
+  z-index: 1;
+}
+
+.task-row.is-archive {
+  cursor: default;
+}
+
+.task-row:last-child {
+  border-bottom: none;
+}
+
+.task-row:hover {
+  background: var(--hover-bg);
+}
+
+/* الصف المفتوح قائمته فوق الصفوف المجاورة */
+.task-row:has(.task-row-menu) {
+  z-index: 30;
+}
+
+.task-row.is-dragging {
+  opacity: 0.45;
+}
+
+.task-row.is-completed {
+  opacity: 0.55;
+}
+
+.task-row.is-completed .task-row-title {
+  text-decoration: line-through;
+  color: var(--text-secondary);
+}
+
+.task-row-status {
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  flex-shrink: 0;
+  margin-top: 2px;
+  border: 2px solid var(--border-color);
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  color: #fff;
+  font-size: 12px;
+}
+
+.task-row-status.status-in_progress {
+  border-color: var(--accent);
+}
+
+.task-row-status.status-in_progress .status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.task-row-status.status-completed {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.task-row-status.status-archived {
+  border-color: transparent;
+  background: var(--hover-bg);
+  color: var(--text-muted);
+  cursor: default;
+  font-size: 13px;
+}
+
+.task-row-body {
+  flex: 1;
+  min-width: 0;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.task-row-main {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.task-row-title {
+  font-size: var(--fs-md);
+  font-weight: var(--fw-bold);
+  line-height: 1.35;
+  color: var(--text-primary);
+}
+
+.task-row-chips {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  align-items: center;
+}
+
+.task-row-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: var(--fw-bold);
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+}
+
+.task-row-chip.context {
+  color: var(--ctx-color, var(--accent));
+  background: var(--ctx-bg, var(--accent-light));
+  border-color: color-mix(in srgb, var(--ctx-color, var(--accent)) 22%, transparent);
+}
+
+.task-row-chip.source {
+  color: #0079bf;
+  background: rgba(0, 121, 191, 0.12);
+}
+
+.task-row-chip.mute {
+  color: #53615a !important;
+  background: var(--hover-bg);
+}
+
+.task-row-date {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: var(--fs-xs);
+  color: var(--text-secondary);
+}
+
+.task-row-date.overdue {
+  color: #84241e !important;
+}
+
+.task-row-date .overdue-tag {
+  background: var(--danger-light);
+  color: #84241e !important;
+  padding: 1px 6px;
+  border-radius: 6px;
+  font-weight: var(--fw-bold);
+}
+
+.task-row-subtasks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 2px;
+}
+
+.task-row-sub {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border: 1px solid var(--border-color);
+  background: var(--card-bg);
+  color: var(--text-secondary);
+  border-radius: 999px;
+  padding: 3px 8px;
+  font-size: var(--fs-xs);
+  cursor: pointer;
+}
+
+.task-row-sub.done {
+  opacity: 0.7;
+  text-decoration: line-through;
+}
+
+.task-row-more {
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+  padding: 3px 4px;
+}
+
+.task-row-actions {
+  display: flex;
+  align-items: center;
+  gap: 1px;
+  flex-shrink: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+}
+
+.task-row:hover .task-row-actions,
+.task-row:focus-within .task-row-actions {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.task-row-actions .btn-icon {
+  width: 30px;
+  height: 30px;
+  font-size: 15px;
+}
+
+.task-drop-target .task-row {
+  outline: 2px dashed var(--accent);
+  outline-offset: -2px;
+  border-radius: 8px;
+}
+
+@media (max-width: 900px) {
+  .matrix-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .task-row-actions {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .task-row-title {
+    font-size: var(--fs-sm);
+  }
+}
+
+@media (hover: none) {
+  .task-row-actions {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+/* ─── Compact task rows ─── */
+.task-row { align-items: center; gap: 8px; padding: 7px 8px; min-height: 48px; }
+.task-row-body { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 0 12px; }
+.task-row-main { min-width: 0; flex-wrap: nowrap; gap: 7px; }
+.task-row-title { overflow: hidden; font-size: .88rem; text-overflow: ellipsis; white-space: nowrap; }
+.task-row-chips { flex-shrink: 0; flex-wrap: nowrap; }
+.task-row-date { grid-column: 2; grid-row: 1; white-space: nowrap; font-size: 11px; }
+.task-row-subtasks { display: none; }
+.task-row-daily .task-row-status, .task-row-more-btn { width: 30px; height: 30px; min-width: 30px; min-height: 30px; }
+.task-row-manage { align-items: center; }

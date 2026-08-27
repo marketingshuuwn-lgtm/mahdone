@@ -1,0 +1,20 @@
+.task-row.is-deferred {
+  opacity: 0.88;
+}
+.task-row-chip.deferred {
+  color: var(--warning);
+  background: var(--warning-light, rgba(245, 158, 11, 0.12));
+}
+.task-row-chip.cancelled {
+  color: var(--danger);
+  background: var(--danger-light, rgba(239, 68, 68, 0.12));
+}
+.task-row-status.status-deferred {
+  border-color: var(--warning);
+  color: var(--warning);
+}
+.task-row-status.status-cancelled,
+.task-row-status.status-archived.status-cancelled {
+  border-color: var(--danger);
+  color: var(--danger);
+}

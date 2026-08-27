@@ -1,0 +1,146 @@
+/** Phase 4 — KPI motion + 7-day trend */
+
+.kpi-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.kpi-stats {
+  margin-bottom: 16px;
+}
+
+.kpi-count {
+  font-variant-numeric: tabular-nums;
+}
+
+.kpi-row {
+  display: grid;
+  grid-template-columns: minmax(200px, 280px) 1fr;
+  gap: 14px;
+  margin-bottom: 14px;
+  align-items: stretch;
+}
+
+.kpi-ring-card,
+.kpi-trend-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.kpi-ring-progress {
+  transition: stroke-dashoffset 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.kpi-time-hint {
+  margin: 8px 0 0;
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  justify-content: center;
+}
+
+.kpi-trend-chart {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 140px;
+  padding: 8px 4px 0;
+  flex: 1;
+}
+
+.kpi-trend-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.kpi-trend-count {
+  font-size: 11px;
+  font-weight: var(--fw-bold);
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.kpi-trend-bar-track {
+  width: 100%;
+  max-width: 36px;
+  height: 100px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.kpi-trend-bar {
+  width: 100%;
+  border-radius: 8px 8px 4px 4px;
+  background: linear-gradient(180deg, var(--accent), var(--accent-deep));
+  transition: height 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  min-height: 4px;
+}
+
+.kpi-trend-col.is-today .kpi-trend-bar {
+  box-shadow: 0 0 0 2px var(--accent-light);
+}
+
+.kpi-trend-col.is-today .kpi-trend-label {
+  color: var(--accent);
+  font-weight: var(--fw-bold);
+}
+
+.kpi-trend-label {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.kpi-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.kpi-dist-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.kpi-bar-anim {
+  transition: width 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.dist-meta {
+  color: var(--text-secondary);
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+}
+
+.dist-space-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.kpi-trello-managed-badge {
+  font-size: 10px;
+  font-weight: var(--fw-bold);
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: rgba(0, 121, 191, 0.12);
+  color: #0079bf;
+}
+
+@media (max-width: 900px) {
+  .kpi-row,
+  .kpi-split {
+    grid-template-columns: 1fr;
+  }
+}

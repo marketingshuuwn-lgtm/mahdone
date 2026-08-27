@@ -1,0 +1,185 @@
+/** Phase 6 — empty CTA, skeleton, row enter, view motion */
+
+/* Page view transition (existing class reinforced) */
+.view-transition {
+  animation: view-rise 280ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes view-rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Task row appear */
+.task-row-enter {
+  animation: row-in 220ms ease both;
+}
+
+@keyframes row-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.task-row.is-exiting {
+  animation: row-out 180ms ease forwards;
+  pointer-events: none;
+}
+
+@keyframes row-out {
+  to {
+    opacity: 0;
+    transform: translateX(12px);
+    max-height: 0;
+    padding-block: 0;
+    margin: 0;
+  }
+}
+
+/* Empty as CTA */
+.empty-cta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+  padding: 32px 16px;
+}
+
+.empty-cta-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent-light);
+  color: var(--accent);
+  font-size: 24px;
+  margin-bottom: 4px;
+}
+
+.empty-cta-title {
+  margin: 0;
+  font-size: var(--fs-md);
+  font-weight: var(--fw-bold);
+  color: var(--text-primary);
+}
+
+.empty-cta-hint {
+  margin: 0;
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+  max-width: 280px;
+  line-height: 1.5;
+}
+
+.empty-cta-action {
+  margin-top: 10px;
+}
+
+/* Skeleton */
+.skel-page {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 8px 4px 24px;
+  max-width: 960px;
+}
+
+.skel-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.skel-stat {
+  height: 72px;
+  border-radius: 14px;
+  background: var(--hover-bg);
+}
+
+.skel-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.skel-section {
+  padding: 14px;
+  border-radius: 16px;
+  background: var(--card-bg-grad);
+  box-shadow: var(--shadow-soft);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.skel-section-head {
+  height: 18px;
+  width: 42%;
+  border-radius: 8px;
+  background: var(--hover-bg);
+}
+
+.skel-row {
+  height: 44px;
+  border-radius: 10px;
+  background: var(--hover-bg);
+}
+
+.skel-pulse {
+  position: relative;
+  overflow: hidden;
+}
+
+.skel-pulse::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--card-bg) 55%, transparent),
+    transparent
+  );
+  animation: skel-shimmer 1.2s ease infinite;
+}
+
+@keyframes skel-shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.full-center .skel-page {
+  width: min(720px, 100%);
+  margin: 0 auto;
+}
+
+@media (max-width: 700px) {
+  .skel-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .view-transition,
+  .task-row-enter,
+  .task-row.is-exiting,
+  .skel-pulse::after {
+    animation: none !important;
+  }
+}

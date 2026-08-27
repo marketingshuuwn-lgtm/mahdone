@@ -1,0 +1,143 @@
+/**
+ * Phase 3 — Settings horizontal tabs (no long empty scroll)
+ */
+
+.settings-view {
+  max-width: 920px;
+}
+
+.settings-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 4px;
+  margin-bottom: 16px;
+  background: var(--hover-bg);
+  border-radius: 14px;
+}
+
+.settings-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 14px;
+  border: none;
+  border-radius: 11px;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-regular);
+  transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.settings-tab i {
+  font-size: 16px;
+}
+
+.settings-tab:hover {
+  color: var(--text-primary);
+  background: color-mix(in srgb, var(--card-bg) 70%, transparent);
+}
+
+.settings-tab.active {
+  background: var(--card-bg);
+  color: var(--accent);
+  font-weight: var(--fw-bold);
+  box-shadow: var(--shadow-soft);
+}
+
+.settings-tab-panel {
+  min-height: 0;
+}
+
+.settings-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.settings-panel-card {
+  background: var(--card-bg-grad);
+  border-radius: 16px;
+  box-shadow: var(--shadow-soft);
+  padding: 18px 18px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.settings-panel-title {
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-bold);
+  margin: 0;
+  color: var(--text-primary);
+}
+
+.settings-panel-text {
+  margin: 0;
+  font-size: var(--fs-sm);
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
+
+.settings-panel-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.settings-panel-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: var(--fs-sm);
+  color: var(--text-secondary);
+}
+
+.settings-panel-list li i {
+  color: var(--accent);
+  font-size: 18px;
+  margin-top: 1px;
+  flex-shrink: 0;
+}
+
+.settings-trello-panel {
+  padding: 12px;
+  max-width: 100%;
+}
+
+.settings-trello-panel .page-header {
+  margin-bottom: 12px;
+}
+
+.settings-import-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.settings-import-label.is-disabled {
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+@media (max-width: 700px) {
+  .settings-tabs {
+    gap: 4px;
+  }
+
+  .settings-tab {
+    flex: 1 1 auto;
+    justify-content: center;
+    padding: 9px 10px;
+  }
+
+  .settings-tab span {
+    font-size: 12px;
+  }
+}

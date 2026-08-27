@@ -1,0 +1,203 @@
+.trello-status-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+.trello-muted {
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+}
+.trello-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.trello-form a {
+  color: var(--accent);
+}
+.trello-inbox-item {
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border-color);
+}
+.trello-inbox-item:last-child {
+  border-bottom: none;
+}
+.trello-item-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+  padding-right: 8px;
+}
+.trello-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--fs-sm);
+  color: var(--accent);
+  text-decoration: none;
+}
+.trello-link:hover {
+  text-decoration: underline;
+}
+.trello-quad-select {
+  max-width: 220px;
+  padding: 8px 12px;
+  font-size: var(--fs-sm);
+}
+.trello-attachments {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.task-deadline.is-overdue {
+  color: var(--danger);
+  background: var(--danger-light);
+}
+.overdue-tag {
+  margin-right: 6px;
+  font-size: 10px;
+  font-weight: 700;
+}
+.timeline-drop-over {
+  background: var(--accent-light);
+  border-radius: 12px;
+  outline: 2px dashed var(--accent);
+  padding: 8px;
+}
+
+.gantt-pill-dot {
+  width: 14px !important;
+  height: 14px !important;
+  min-width: 14px;
+  padding: 0 !important;
+  border-radius: 50% !important;
+  top: 50% !important;
+  right: 50% !important;
+  transform: translate(50%, -50%);
+  left: auto;
+}
+.gantt-recurring-badge {
+  margin-right: 6px;
+  color: var(--accent);
+  font-size: 14px;
+  vertical-align: middle;
+}
+.form-hint {
+  margin-top: 6px;
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+  font-weight: 300;
+}
+
+/* إشعارات هادئة — أسفل جانب الشاشة */
+.toast-container {
+  position: fixed !important;
+  top: auto !important;
+  bottom: 28px !important;
+  left: auto !important;
+  right: auto !important;
+  inset-inline-end: 24px !important;
+  transform: none !important;
+  z-index: 200;
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: stretch;
+  gap: 8px;
+  width: min(360px, calc(100vw - 32px));
+  pointer-events: none;
+}
+.toast {
+  pointer-events: auto;
+  background: color-mix(in srgb, var(--card-bg) 92%, var(--text-primary)) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border-color) !important;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.12) !important;
+  padding: 12px 14px !important;
+  border-radius: 12px !important;
+  margin-bottom: 0 !important;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  opacity: 0;
+  transform: translateY(12px) scale(0.98);
+  transition: opacity 0.28s ease, transform 0.28s ease;
+  font-size: var(--fs-sm);
+  line-height: 1.45;
+  backdrop-filter: blur(10px);
+}
+.toast.show {
+  opacity: 1 !important;
+  transform: translateY(0) scale(1) !important;
+}
+.toast.error {
+  background: color-mix(in srgb, var(--danger-light) 80%, var(--card-bg)) !important;
+  color: var(--danger) !important;
+  border-color: color-mix(in srgb, var(--danger) 35%, var(--border-color)) !important;
+}
+.toast i {
+  font-size: 18px;
+  flex-shrink: 0;
+  margin-top: 1px;
+  opacity: 0.85;
+}
+.toast-msg {
+  flex: 1;
+  min-width: 0;
+}
+.toast-bump {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+  background: var(--hover-bg);
+  border-radius: 999px;
+  padding: 2px 7px;
+}
+
+.task-source-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  background: rgba(0, 121, 191, 0.12);
+  color: #0079bf;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+.task-attachments {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+.task-attach-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  max-width: 160px;
+  padding: 4px 9px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: var(--card-bg);
+  color: var(--text-secondary);
+  font-size: var(--fs-xs);
+  text-decoration: none;
+  overflow: hidden;
+}
+.task-attach-chip span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.task-attach-chip:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}

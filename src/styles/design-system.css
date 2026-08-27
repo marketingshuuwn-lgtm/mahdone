@@ -1,0 +1,274 @@
+/**
+ * نظام بصري موحّد — tokens + shell + أزرار/نماذج.
+ * تخطيط المصفوفة: matrix-stack.css فقط (لا .matrix-grid هنا).
+ * الشريط: sidebar-rail.css فقط (قواعد .sidebar القديمة مخفّفة).
+ */
+
+:root {
+  --sidebar-w: 252px;
+  --sidebar-compact-w: 76px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --radius-sm: 12px;
+  --radius-md: 16px;
+  --radius-lg: 20px;
+  --radius-xl: 26px;
+  --radius-pill: 999px;
+  --page-pad-x: clamp(16px, 2vw, 36px);
+  --page-pad-y: clamp(14px, 1.6vh, 28px);
+  --page-pad-bottom: 112px;
+  --control-h: 40px;
+  --focus-ring: 0 0 0 3px var(--accent-light);
+  --ease: 0.18s ease;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+button,
+.nav-item,
+.btn-icon,
+.chip-btn,
+.filter-chip,
+.view-tab,
+.workspace-tab,
+.data-btn,
+.rail-btn {
+  transition: background var(--ease), color var(--ease), border-color var(--ease),
+    box-shadow var(--ease), opacity var(--ease), transform var(--ease);
+}
+
+button:focus-visible,
+.nav-item:focus-visible,
+.btn-icon:focus-visible,
+.form-input:focus-visible,
+.view-tab:focus-visible,
+.workspace-tab:focus-visible,
+.rail-btn:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+.app-container {
+  display: flex;
+  min-height: 100vh;
+  min-height: 100dvh;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+}
+
+.main-content {
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+  max-width: none;
+}
+
+/* ─── Buttons ─── */
+.btn-primary,
+.btn-secondary {
+  min-height: var(--control-h);
+  padding: 10px 18px;
+  border-radius: var(--radius-md);
+  font-size: var(--fs-sm);
+}
+
+.btn-primary:hover {
+  filter: brightness(1.05);
+}
+
+.btn-secondary:hover {
+  background: var(--border-color);
+}
+
+.btn-icon {
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  font-size: 16px;
+}
+
+/* ─── Cards & page ─── */
+.card {
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+}
+
+.page-header {
+  margin-bottom: var(--space-5);
+}
+
+.page-title {
+  font-size: var(--fs-2xl);
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+}
+
+.page-desc {
+  font-size: var(--fs-sm);
+  margin-top: var(--space-1);
+}
+
+/* ─── View switcher ─── */
+.matrix-topbar {
+  margin-bottom: var(--space-4);
+}
+
+.view-tabs {
+  border-radius: var(--radius-lg);
+  gap: 2px;
+}
+
+.view-tab {
+  min-height: 38px;
+  padding: 8px 14px;
+  border-radius: var(--radius-md);
+  font-size: var(--fs-sm);
+}
+
+/* ─── Workspace strip ─── */
+.workspace-switcher {
+  margin-bottom: var(--space-4);
+}
+
+.workspace-tabs {
+  gap: var(--space-2);
+}
+
+.workspace-tab {
+  min-height: 36px;
+  padding: 7px 12px;
+  font-size: var(--fs-xs);
+  gap: 6px;
+}
+
+.workspace-tab i {
+  font-size: 15px;
+}
+
+/* ─── Floating smart bar (position refined in layout-shell) ─── */
+.floating-smart-bar {
+  z-index: 60;
+}
+
+.floating-smart-inner {
+  padding: 8px 10px;
+  border-radius: var(--radius-xl);
+  gap: 6px;
+}
+
+.floating-input {
+  min-height: 36px;
+  padding: 8px 34px 8px 10px;
+  font-size: var(--fs-sm);
+  border-radius: var(--radius-md);
+}
+
+.floating-icon-btn,
+.floating-submit {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+/* ─── Forms ─── */
+.form-input {
+  min-height: var(--control-h);
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+  font-size: var(--fs-sm);
+}
+
+.form-field {
+  margin-bottom: var(--space-4);
+}
+
+.chip-btn,
+.filter-chip {
+  min-height: 34px;
+  padding: 6px 12px;
+  border-radius: var(--radius-pill);
+}
+
+/* ─── Modal ─── */
+.modal-box {
+  border-radius: var(--radius-xl);
+  padding: var(--space-5);
+}
+
+.modal-footer {
+  gap: var(--space-2);
+  margin-top: var(--space-5);
+}
+
+/* ─── Unified page hero ─── */
+.page-hero {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin: 0 0 20px;
+  padding: clamp(22px, 3vw, 34px);
+  border: 1px solid color-mix(in srgb, var(--accent) 14%, var(--border-color));
+  border-radius: var(--radius-xl);
+  background: linear-gradient(135deg, color-mix(in srgb, var(--surface-card) 88%, white), color-mix(in srgb, var(--accent-light) 45%, var(--surface-card)));
+  box-shadow: var(--shadow-soft);
+}
+.page-hero.is-compact { padding: 18px 22px; }
+.page-hero-copy { min-width: 0; }
+.page-hero-eyebrow { margin: 0 0 8px; color: var(--accent); font-size: var(--fs-xs); font-weight: 850; letter-spacing: .05em; }
+.page-hero-title { margin: 0; color: var(--text-primary); font-size: clamp(25px, 3vw, 38px); letter-spacing: -.04em; line-height: 1.08; }
+.page-hero-description { max-width: 720px; margin: 12px 0 0; color: var(--text-secondary); font-size: var(--fs-sm); line-height: 1.75; }
+.page-hero-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; color: var(--text-secondary); font-size: var(--fs-xs); }
+.page-hero-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 8px; }
+.page-hero-actions .period-tabs { margin: 0; }
+.page-hero-actions .btn-primary, .page-hero-actions .btn-secondary { white-space: nowrap; }
+
+.page-workspace-layout { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 18px; align-items: start; }
+.page-side-card { position: sticky; top: 20px; padding: 18px; border: 1px solid var(--border-color); border-radius: var(--radius-lg); background: var(--surface-card); box-shadow: var(--shadow-soft); }
+.page-side-card h2 { margin: 0 0 8px; font-size: var(--fs-md); }
+.page-side-card p { margin: 0; color: var(--text-secondary); font-size: var(--fs-xs); line-height: 1.7; }
+
+@media (max-width: 820px) {
+  .page-hero { align-items: stretch; flex-direction: column; padding: 20px; }
+  .page-hero-actions { justify-content: flex-start; }
+  .page-workspace-layout { grid-template-columns: 1fr; }
+  .page-side-card { position: static; }
+}
+
+/* ─── Projects workspace ─── */
+.projects-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(300px, .72fr); gap: 18px; align-items: start; }
+.projects-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.project-card { position: relative; display: flex; flex-direction: column; align-items: stretch; gap: 10px; min-height: 180px; padding: 20px; border: 1px solid var(--border-color); border-radius: var(--radius-lg); background: var(--surface-card); color: var(--text-primary); text-align: right; box-shadow: var(--shadow-soft); cursor: pointer; }
+.project-card:hover, .project-card.is-active { border-color: color-mix(in srgb, var(--accent) 45%, var(--border-color)); transform: translateY(-2px); }
+.project-card-color { position: absolute; inset: 0 0 auto; height: 4px; border-radius: var(--radius-lg) var(--radius-lg) 0 0; }
+.project-card-topline, .project-card-footer { display: flex; justify-content: space-between; color: var(--text-tertiary); font-size: var(--fs-xs); }
+.project-card strong { font-size: 18px; letter-spacing: -.02em; }
+.project-card-description { min-height: 38px; color: var(--text-secondary); font-size: var(--fs-xs); line-height: 1.7; }
+.project-card-progress { height: 6px; overflow: hidden; border-radius: var(--radius-pill); background: var(--bg-muted); }
+.project-card-progress span { display: block; height: 100%; border-radius: inherit; }
+.project-detail-panel { min-height: 280px; padding: 20px; border: 1px solid var(--border-color); border-radius: var(--radius-lg); background: var(--surface-card); box-shadow: var(--shadow-soft); }
+.project-detail-heading h2 { margin: 4px 0 6px; font-size: 24px; }
+.project-detail-heading p { margin: 0 0 14px; color: var(--text-secondary); font-size: var(--fs-sm); line-height: 1.7; }
+.project-detail-meta { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; color: var(--text-tertiary); font-size: var(--fs-xs); }
+.project-detail-empty { min-height: 240px; display: grid; place-content: center; gap: 10px; color: var(--text-tertiary); text-align: center; }
+.project-detail-empty i { font-size: 32px; color: var(--accent); }
+@media (max-width: 920px) { .projects-layout { grid-template-columns: 1fr; } }
+@media (max-width: 620px) { .projects-grid { grid-template-columns: 1fr; } }

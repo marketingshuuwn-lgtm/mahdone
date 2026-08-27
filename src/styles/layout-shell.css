@@ -1,0 +1,54 @@
+/**
+ * تباعد الصفحة + العوامات فقط.
+ * لا قواعد مصفوفة هنا — المصدر: matrix-stack.css
+ */
+
+:root {
+  --page-pad-x: clamp(16px, 2.2vw, 40px);
+  --page-pad-y: clamp(16px, 1.8vh, 32px);
+  --page-pad-bottom: 110px;
+}
+
+.main-content {
+  padding: var(--page-pad-y) var(--page-pad-x) var(--page-pad-bottom);
+}
+
+.floating-smart-bar {
+  bottom: 18px;
+  width: min(640px, calc(100vw - 32px));
+}
+
+.floating-timer-panel {
+  position: fixed;
+  bottom: 18px;
+  left: 18px;
+  z-index: 70;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg, 12px);
+  padding: 12px 14px;
+  box-shadow: var(--shadow-hover);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 168px;
+  max-width: 280px;
+  direction: rtl;
+}
+
+.floating-timer-actions {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+@media (max-width: 900px) {
+  .main-content {
+    padding: 14px 12px 96px;
+  }
+
+  .floating-timer-panel {
+    bottom: 72px;
+    left: 12px;
+  }
+}

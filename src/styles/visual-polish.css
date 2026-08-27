@@ -1,0 +1,5 @@
+/**
+ * @deprecated — قواعد .matrix-grid / .task-item / .sidebar القديمة حُذفت
+ * لتفادي التعارض مع matrix-stack.css و sidebar-rail.css.
+ * تلميع البطاقات والصفوف يُدار من matrix-stack + ux-motion.
+ */

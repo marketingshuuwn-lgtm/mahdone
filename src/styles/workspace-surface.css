@@ -1,0 +1,104 @@
+/* خلفيات سطح المساحة — طبقة واضحة تحت المحتوى مع غطاء قراءة خفيف */
+
+.main-content.has-ws-surface {
+  position: relative;
+  isolation: isolate;
+  /* الغطاء كان 72% فيخفي التدرج — خُفِّض ليظهر اللون بوضوح مع بقاء القراءة */
+  --ws-veil: 38%;
+  min-height: calc(100vh - 32px);
+  background-color: transparent;
+  background-image:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--bg-color) var(--ws-veil), transparent),
+      color-mix(in srgb, var(--bg-color) calc(var(--ws-veil) + 12%), transparent)
+    ),
+    var(--ws-surface);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: local;
+  transition: background 0.35s ease;
+}
+
+/* الوضع الداكن: غطاء أعلى قليلاً لأن التدرجات داكنة أصلاً */
+[data-theme='dark'] .main-content.has-ws-surface {
+  --ws-veil: 48%;
+}
+
+/* معاينة في نافذة تعديل المظهر */
+.workspace-surface-picks {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(88px, 1fr));
+  gap: 8px;
+}
+
+.workspace-surface-pick {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  border-radius: 12px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  overflow: hidden;
+  padding: 0;
+  background: var(--hover-bg);
+  transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s;
+}
+
+.workspace-surface-pick:hover {
+  transform: translateY(-1px);
+}
+
+.workspace-surface-pick.active {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-light);
+}
+
+.workspace-surface-pick-swatch {
+  position: absolute;
+  inset: 0;
+}
+
+.workspace-surface-pick-label {
+  position: absolute;
+  bottom: 4px;
+  right: 6px;
+  left: 6px;
+  font-size: 10px;
+  font-weight: var(--fw-bold);
+  color: rgba(255, 255, 255, 0.92);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
+  text-align: right;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  pointer-events: none;
+}
+
+.workspace-surface-pick.is-light .workspace-surface-pick-label {
+  color: rgba(20, 20, 18, 0.75);
+  text-shadow: none;
+}
+
+.workspace-surface-pick-check {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+}
+
+.workspace-surface-section-label {
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+  margin: 10px 0 6px;
+  font-weight: var(--fw-bold);
+}

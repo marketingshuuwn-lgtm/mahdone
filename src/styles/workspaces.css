@@ -1,0 +1,296 @@
+/* Workspace switcher */
+.workspace-switcher {
+  margin-bottom: 20px;
+}
+
+.workspace-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.workspace-tab-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  cursor: grab;
+  transition: opacity 0.15s;
+}
+.workspace-tab-wrap.dragging { opacity: 0.4; }
+.workspace-tab-wrap.drag-over::before {
+  content: '';
+  position: absolute;
+  right: -4px;
+  top: 4px;
+  bottom: 4px;
+  width: 2px;
+  background: var(--accent);
+  border-radius: 999px;
+}
+
+.workspace-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--border-color);
+  background: var(--card-bg);
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: var(--fs-sm);
+  transition: background 0.15s, border-color 0.15s, color 0.15s, box-shadow 0.15s;
+}
+
+.workspace-tab i {
+  font-size: 16px;
+}
+
+.workspace-tab:hover {
+  border-color: var(--ws-color, var(--accent));
+  color: var(--ws-color, var(--accent));
+}
+
+.workspace-tab.active {
+  background: var(--ws-bg, var(--accent-light));
+  border-color: var(--ws-color, var(--accent));
+  color: var(--ws-color, var(--accent));
+  font-weight: var(--fw-bold);
+  box-shadow: var(--shadow-soft);
+  padding-inline-end: 10px;
+}
+
+.workspace-tab-more {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  margin-inline-start: 2px;
+  font-size: 12px;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.workspace-tab:hover .workspace-tab-more,
+.workspace-tab.active .workspace-tab-more {
+  opacity: 0.85;
+}
+
+.workspace-tab-more:hover {
+  opacity: 1;
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.workspace-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  inset-inline-start: 0;
+  z-index: 40;
+  min-width: 180px;
+  padding: 6px;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  background: var(--card-bg);
+  box-shadow: var(--shadow-hover);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.workspace-menu button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 10px 12px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-primary);
+  font-size: var(--fs-sm);
+  cursor: pointer;
+  text-align: start;
+}
+
+.workspace-menu button:hover {
+  background: var(--bg-color);
+}
+
+.workspace-menu-danger {
+  color: var(--danger) !important;
+}
+
+.workspace-archive-btn {
+  flex: 1 1 100%;
+  color: var(--danger) !important;
+  border-color: color-mix(in srgb, var(--danger) 40%, var(--border-color)) !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.workspace-all-tab.active {
+  background: var(--bg-color);
+  border-color: var(--text-primary);
+  color: var(--text-primary);
+}
+
+.workspace-trait-line {
+  margin: 10px 0 0;
+  font-size: var(--fs-sm);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  opacity: 0.9;
+}
+
+.workspace-description-line {
+  margin: 6px 0 0;
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+  line-height: 1.45;
+  max-width: 52ch;
+}
+
+.workspace-all-hint {
+  margin: 10px 0 0;
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+}
+
+.workspace-add-tab {
+  border-style: dashed;
+  color: var(--text-muted);
+}
+
+.workspace-add-tab:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  border-style: dashed;
+}
+
+.workspace-create-modal {
+  max-width: 480px;
+}
+
+.workspace-preview-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 16px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: var(--ws-bg, var(--accent-light));
+  color: var(--ws-color, var(--accent));
+  border: 1px solid color-mix(in srgb, var(--ws-color, var(--accent)) 35%, transparent);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-sm);
+}
+
+.workspace-preview-chip i {
+  font-size: 18px;
+}
+
+.workspace-icon-picks,
+.workspace-color-picks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.workspace-icon-picks {
+  max-height: 140px;
+  overflow-y: auto;
+}
+
+.workspace-icon-pick {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-color);
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+.workspace-icon-pick.active {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-light);
+}
+
+.workspace-color-pick {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  padding: 0;
+}
+
+.workspace-color-pick.active {
+  box-shadow: 0 0 0 3px var(--accent-light);
+  border-color: var(--card-bg);
+}
+
+.workspace-trello-badge {
+  font-size: 10px;
+  font-weight: var(--fw-bold);
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: rgba(0, 121, 191, 0.15);
+  color: #0079bf;
+}
+
+.workspace-archived-bar {
+  margin-top: 12px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: var(--hover-bg);
+  border: 1px dashed var(--border-color);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.workspace-archived-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+  font-weight: var(--fw-bold);
+}
+
+.workspace-archived-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.workspace-archived-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border-color);
+  background: var(--card-bg);
+  color: var(--text-secondary);
+  font-size: var(--fs-xs);
+  cursor: pointer;
+}
+
+.workspace-archived-chip:hover {
+  border-color: var(--ws-color, var(--accent));
+  color: var(--ws-color, var(--accent));
+}
